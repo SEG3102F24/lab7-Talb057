@@ -54,12 +54,21 @@ class ApiController(val authorRepository: AuthorRepository,
             HttpStatus.OK)
     }
 
-    @Operation(summary = "Get an authors by id")
+    // @Operation(summary = "Get an authors by id")
+    // @GetMapping("/authors/{id}")
+    // fun getAuthorById(@PathVariable("id") id: Long): ResponseEntity<AuthorRepresentation> {
+    //     return authorRepository.findById(id)
+    //         .map { entity: Author -> authorAssembler.toModel(entity) }
+    //         .map { body: AuthorRepresentation -> ResponseEntity.ok(body) }
+    //         .orElse(ResponseEntity.notFound().build())
+    // }
+
+    @Operation(summary = "Get an author by ID")
     @GetMapping("/authors/{id}")
     fun getAuthorById(@PathVariable("id") id: Long): ResponseEntity<AuthorRepresentation> {
         return authorRepository.findById(id)
-            .map { entity: Author -> authorAssembler.toModel(entity) }
-            .map { body: AuthorRepresentation -> ResponseEntity.ok(body) }
+            .map { author -> authorAssembler.toModel(author) }
+            .map { authorRepresentation -> ResponseEntity.ok(authorRepresentation) }
             .orElse(ResponseEntity.notFound().build())
     }
 
